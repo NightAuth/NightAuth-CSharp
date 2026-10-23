@@ -1,0 +1,61 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NightAuth.SDK", "sdk\NightAuth.SDK.csproj", "{5BBF7FD4-8139-49CA-AD59-331C024FD9B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NightAuth.Console", "console\NightAuth.Console.csproj", "{DD1C7051-EDC1-462F-ABCE-15F424C015AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NightAuth.Desktop", "desktop\NightAuth.Desktop.csproj", "{9ED66806-E834-4FA1-A9C3-D077590285FE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5BBF7FD4-8139-49CA-AD59-331C024FD9B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BBF7FD4-8139-49CA-AD59-331C024FD9B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BBF7FD4-8139-49CA-AD59-331C024FD9B2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5BBF7FD4-8139-49CA-AD59-331C024FD9B2}.Debug|x64.Build.0 = Debug|Any CPU
+		{5BBF7FD4-8139-49CA-AD59-331C024FD9B2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5BBF7FD4-8139-49CA-AD59-331C024FD9B2}.Debug|x86.Build.0 = Debug|Any CPU
+		{5BBF7FD4-8139-49CA-AD59-331C024FD9B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BBF7FD4-8139-49CA-AD59-331C024FD9B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BBF7FD4-8139-49CA-AD59-331C024FD9B2}.Release|x64.ActiveCfg = Release|Any CPU
+		{5BBF7FD4-8139-49CA-AD59-331C024FD9B2}.Release|x64.Build.0 = Release|Any CPU
+		{5BBF7FD4-8139-49CA-AD59-331C024FD9B2}.Release|x86.ActiveCfg = Release|Any CPU
+		{5BBF7FD4-8139-49CA-AD59-331C024FD9B2}.Release|x86.Build.0 = Release|Any CPU
+		{DD1C7051-EDC1-462F-ABCE-15F424C015AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD1C7051-EDC1-462F-ABCE-15F424C015AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD1C7051-EDC1-462F-ABCE-15F424C015AB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DD1C7051-EDC1-462F-ABCE-15F424C015AB}.Debug|x64.Build.0 = Debug|Any CPU
+		{DD1C7051-EDC1-462F-ABCE-15F424C015AB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DD1C7051-EDC1-462F-ABCE-15F424C015AB}.Debug|x86.Build.0 = Debug|Any CPU
+		{DD1C7051-EDC1-462F-ABCE-15F424C015AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD1C7051-EDC1-462F-ABCE-15F424C015AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD1C7051-EDC1-462F-ABCE-15F424C015AB}.Release|x64.ActiveCfg = Release|Any CPU
+		{DD1C7051-EDC1-462F-ABCE-15F424C015AB}.Release|x64.Build.0 = Release|Any CPU
+		{DD1C7051-EDC1-462F-ABCE-15F424C015AB}.Release|x86.ActiveCfg = Release|Any CPU
+		{DD1C7051-EDC1-462F-ABCE-15F424C015AB}.Release|x86.Build.0 = Release|Any CPU
+		{9ED66806-E834-4FA1-A9C3-D077590285FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9ED66806-E834-4FA1-A9C3-D077590285FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9ED66806-E834-4FA1-A9C3-D077590285FE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9ED66806-E834-4FA1-A9C3-D077590285FE}.Debug|x64.Build.0 = Debug|Any CPU
+		{9ED66806-E834-4FA1-A9C3-D077590285FE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9ED66806-E834-4FA1-A9C3-D077590285FE}.Debug|x86.Build.0 = Debug|Any CPU
+		{9ED66806-E834-4FA1-A9C3-D077590285FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9ED66806-E834-4FA1-A9C3-D077590285FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9ED66806-E834-4FA1-A9C3-D077590285FE}.Release|x64.ActiveCfg = Release|Any CPU
+		{9ED66806-E834-4FA1-A9C3-D077590285FE}.Release|x64.Build.0 = Release|Any CPU
+		{9ED66806-E834-4FA1-A9C3-D077590285FE}.Release|x86.ActiveCfg = Release|Any CPU
+		{9ED66806-E834-4FA1-A9C3-D077590285FE}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

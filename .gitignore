@@ -1,0 +1,23 @@
+## Visual Studio / Roslyn / MSBuild
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+.vs/
+*.user
+*.userosscache
+*.suo
+*.sln.docstates
+*.userprefs
+*.pidb
+*.booproj
+
+## Publish / Build outputs
+publish/
+*.nupkg
+*.snupkg
+
+## Crash reports / dumps
+*.dmp
+*.dump
+*.crash

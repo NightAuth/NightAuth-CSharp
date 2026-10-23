@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>NightAuth.SDK</AssemblyName>
+    <RootNamespace>NightAuth</RootNamespace>
+    <Version>1.0.0</Version>
+    <Authors>NightAuth Team</Authors>
+    <Description>NightAuth .NET SDK Library — End-to-End Cryptographic Authentication Framework</Description>
+    <OptimizationPreference>Speed</OptimizationPreference>
+    <TieredCompilation>true</TieredCompilation>
+    <TieredPGO>true</TieredPGO>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BouncyCastle.Cryptography" Version="2.7.0" />
+    <PackageReference Include="System.Management" Version="10.0.11" />
+  </ItemGroup>
+
+</Project>

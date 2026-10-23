@@ -1,0 +1,918 @@
+<Window x:Class="NightAuthWpf.DashboardWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="NightAuth Dashboard"
+        Height="680" Width="1020"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="CanMinimize">
+
+    <Border x:Name="RootBorder" Background="{StaticResource BgDarkBrush}" CornerRadius="16" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1"
+            SizeChanged="RootBorder_SizeChanged">
+        <Border.Effect>
+            <DropShadowEffect Color="Black" BlurRadius="45" ShadowDepth="0" Opacity="0.6" />
+        </Border.Effect>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="42" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Background="{StaticResource CardHeaderBgBrush}" CornerRadius="16,16,0,0" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="0,0,0,1"
+                    MouseDown="TitleBar_MouseDown">
+                <Grid Background="Transparent">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" Margin="16,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False">
+                        <Image Source="logo.png" Width="26" Height="26" Margin="0,0,10,0" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" />
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock x:Name="LblWindowAppName" Text="NIGHTAUTH" FontSize="13.5" FontWeight="Black" Foreground="White" />
+                            <TextBlock Text="CONTROL DASHBOARD" FontSize="9" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}" />
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,6,0">
+                        <Button Content="−" Click="BtnMinimize_Click" Style="{StaticResource TitleBarButton}" Height="34" />
+                        <Button Content="✕" Click="BtnClose_Click" Style="{StaticResource TitleBarCloseButton}" Height="34" Margin="2,0,0,0" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="230" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Background="{StaticResource CardHeaderBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="0,0,1,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <!-- Nav menu -->
+                        <StackPanel Grid.Row="0" Margin="12,18,12,0">
+                            <RadioButton x:Name="NavOverview" Content="01  Overview" Style="{StaticResource NavItem}" Checked="NavOverview_Checked" Margin="0,0,0,4" />
+                            <RadioButton x:Name="NavSubscriptions" Content="02  Subscriptions" Style="{StaticResource NavItem}" Checked="NavSubscriptions_Checked" Margin="0,0,0,4" />
+                            <RadioButton x:Name="NavVariables" Content="03  Variables" Style="{StaticResource NavItem}" Checked="NavVariables_Checked" Margin="0,0,0,4" />
+                            <RadioButton x:Name="NavChat" Content="04  Live Chat" Style="{StaticResource NavItem}" Checked="NavChat_Checked" Margin="0,0,0,4" />
+                            <RadioButton x:Name="NavStats" Content="05  Statistics" Style="{StaticResource NavItem}" Checked="NavStats_Checked" Margin="0,0,0,4" />
+                            <RadioButton x:Name="NavSecurity" Content="06  Security" Style="{StaticResource NavItem}" Checked="NavSecurity_Checked" Margin="0,0,0,4" />
+                            <RadioButton x:Name="NavFilesHooks" Content="07  Files &amp; Hooks" Style="{StaticResource NavItem}" Checked="NavFilesHooks_Checked" Margin="0,0,0,4" />
+                        </StackPanel>
+
+                        <!-- Bottom strip with Signed in as and Log Out button -->
+                        <Border Grid.Row="1" Padding="14,14,14,16" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="0,1,0,0">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="2,0,0,10" VerticalAlignment="Center">
+                                    <TextBlock Text="SIGNED IN AS " Style="{StaticResource FieldLabel}" Foreground="{StaticResource TextMutedBrush}" VerticalAlignment="Center" />
+                                    <TextBlock x:Name="LblDashboardUsername" Text="User" FontWeight="Bold" FontSize="11.5" Foreground="{StaticResource TextPrimaryBrush}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                                </StackPanel>
+                                <Button Content="Log Out" Style="{StaticResource GhostButton}" Click="BtnLogout_Click"
+                                        HorizontalAlignment="Stretch" Foreground="{StaticResource ErrorBrush}" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+                    <Grid Margin="32,28,32,28">
+
+                        <StackPanel x:Name="PanelOverview" Visibility="Visible">
+                            <TextBlock Text="Overview" FontSize="22" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4" />
+                            <TextBlock Text="Account information and active subscription details." FontSize="12.5" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,20" />
+
+                            <Border Background="{StaticResource CardBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="12" Padding="20" Margin="0,0,0,20">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="EMAIL ADDRESS" Style="{StaticResource FieldLabel}" Margin="0,0,0,4" />
+                                        <TextBlock x:Name="LblDashboardEmail" Text="—" FontSize="13.5" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,16" />
+                                        <TextBlock Text="IP ADDRESS" Style="{StaticResource FieldLabel}" Margin="0,0,0,4" />
+                                        <TextBlock x:Name="LblDashboardIp" Text="—" FontSize="13" FontFamily="Consolas" Foreground="{StaticResource TextSecondaryBrush}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="ACCOUNT CREATED" Style="{StaticResource FieldLabel}" Margin="0,0,0,4" />
+                                        <TextBlock x:Name="LblDashboardCreated" Text="—" FontSize="13.5" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,16" />
+                                        <TextBlock Text="LAST LOGIN (UTC)" Style="{StaticResource FieldLabel}" Margin="0,0,0,4" />
+                                        <TextBlock x:Name="LblDashboardLastLogin" Text="—" FontSize="13" Foreground="{StaticResource TextSecondaryBrush}" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                <Border Width="3" Height="13" CornerRadius="2" Background="{StaticResource AccentBlueBrush}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                <TextBlock Text="Active Subscriptions &amp; Entitlements" Style="{StaticResource SectionHeading}" Foreground="{StaticResource TextPrimaryBrush}" />
+                            </StackPanel>
+
+                            <Border x:Name="NoSubscriptionsCard" Background="{StaticResource CardBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="12" Padding="20" Margin="0,0,0,20" Visibility="Collapsed">
+                                <StackPanel HorizontalAlignment="Center" Margin="0,10">
+                                    <TextBlock Text="&#xE8D7;" FontFamily="Segoe MDL2 Assets" FontSize="26" Foreground="{StaticResource TextMutedBrush}" HorizontalAlignment="Center" Margin="0,0,0,8" />
+                                    <TextBlock Text="No active subscription found" FontSize="13.5" FontWeight="SemiBold" Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Center" />
+                                    <TextBlock Text="Use a license key in the Account &amp; Security section to activate a plan." FontSize="11.5" Foreground="{StaticResource TextMutedBrush}" HorizontalAlignment="Center" Margin="0,4,0,0" />
+                                </StackPanel>
+                            </Border>
+
+                            <ItemsControl x:Name="ListSubscriptions" Margin="0,0,0,20">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{StaticResource CardBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="12" Padding="18,16" Margin="0,0,0,10">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <StackPanel Grid.Column="0">
+                                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                                        <Border Background="#203b82f6" BorderBrush="#403b82f6" BorderThickness="1" CornerRadius="6" Padding="8,3" Margin="0,0,10,0">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <Ellipse Width="6" Height="6" Fill="{StaticResource AccentBlueBrush}" Margin="0,0,6,0" VerticalAlignment="Center" />
+                                                                <TextBlock Text="{Binding Subscription}" FontSize="12" FontWeight="Bold" Foreground="{StaticResource AccentBlueBrush}" />
+                                                            </StackPanel>
+                                                        </Border>
+                                                        <TextBlock Text="ACTIVE PLAN" Style="{StaticResource FieldLabel}" VerticalAlignment="Center" Foreground="{StaticResource TextMutedBrush}" />
+                                                    </StackPanel>
+
+                                                    <StackPanel Orientation="Horizontal" Margin="2,4,0,0">
+                                                        <TextBlock Text="KEY: " FontSize="11" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}" VerticalAlignment="Center" />
+                                                        <TextBlock Text="{Binding Key}" FontFamily="Consolas" FontSize="12.5" Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center" />
+                                                    </StackPanel>
+                                                </StackPanel>
+
+                                                <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                                    <Border Background="#12ffffff" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="6" Padding="10,4" HorizontalAlignment="Right" Margin="0,0,0,6">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock Text="&#xE823;" FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,6,0" VerticalAlignment="Center" />
+                                                            <TextBlock Text="{Binding TimeRemainingFormatted}" FontSize="11.5" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryBrush}" />
+                                                        </StackPanel>
+                                                    </Border>
+                                                    <TextBlock Text="{Binding ExpiryFormatted}" FontSize="11" Foreground="{StaticResource TextMutedBrush}" HorizontalAlignment="Right" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <Border Width="3" Height="13" CornerRadius="2" Background="{StaticResource AccentBlueBrush}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                <TextBlock Text="Application Live Insights" Style="{StaticResource SectionHeading}" Foreground="{StaticResource TextPrimaryBrush}" />
+                            </StackPanel>
+                            <Border Background="{StaticResource CardBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="12" Padding="20">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="TOTAL USERS" Style="{StaticResource FieldLabel}" Margin="0,0,0,5" />
+                                        <TextBlock x:Name="TxtStatUsers" Text="—" FontSize="24" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="TOTAL LICENSES" Style="{StaticResource FieldLabel}" Margin="0,0,0,5" />
+                                        <TextBlock x:Name="TxtStatLicenses" Text="—" FontSize="24" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="ONLINE NOW" Style="{StaticResource FieldLabel}" Margin="0,0,0,5" />
+                                        <TextBlock x:Name="TxtStatOnline" Text="—" FontSize="24" FontWeight="Bold" Foreground="{StaticResource SuccessBrush}" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel x:Name="PanelVariables" Visibility="Collapsed">
+                            <TextBlock Text="Variables" FontSize="22" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4" />
+                            <TextBlock Text="Inspect global cloud runtime variables or manage user-scoped personal storage." FontSize="12.5" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,16" />
+
+                            <!-- Card 1 (Top, Horizontal): Global Variables -->
+                            <Border Background="{StaticResource CardBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="12" Padding="16,14" Margin="0,0,0,14">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                        <Border Width="3" Height="13" CornerRadius="2" Background="{StaticResource AccentBlueBrush}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                        <TextBlock Text="Global Variables" Style="{StaticResource SectionHeading}" Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center" />
+                                        <TextBlock Text="•  App-wide constants" FontSize="11.5" Foreground="{StaticResource TextMutedBrush}" Margin="8,0,0,0" VerticalAlignment="Center" />
+                                    </StackPanel>
+
+                                    <!-- Compact horizontal input row: Key -> Value -> Fetch Button -->
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="280" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="130" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid Grid.Column="0" Margin="0,0,10,0">
+                                            <TextBox x:Name="TxtVarKey" Style="{StaticResource NightAuthIconTextBox}" />
+                                            <TextBlock Text="&#xE8D7;" Style="{StaticResource InputIcon}" />
+                                            <TextBlock Text="Variable key (e.g. motd, api_url)" Style="{StaticResource PlaceholderText}" Margin="36,0,12,0">
+                                                <TextBlock.Visibility>
+                                                    <MultiBinding Converter="{StaticResource PlaceholderVisibility}">
+                                                        <Binding Path="IsFocused" ElementName="TxtVarKey" />
+                                                        <Binding Path="Text" ElementName="TxtVarKey" />
+                                                    </MultiBinding>
+                                                </TextBlock.Visibility>
+                                            </TextBlock>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" Margin="0,0,10,0">
+                                            <TextBox x:Name="TxtVarValue" Style="{StaticResource NightAuthTextBox}" IsReadOnly="True" />
+                                            <TextBlock Text="Returned value will appear here..." Style="{StaticResource PlaceholderText}" Margin="12,0,12,0">
+                                                <TextBlock.Visibility>
+                                                    <MultiBinding Converter="{StaticResource PlaceholderVisibility}">
+                                                        <Binding Path="IsFocused" ElementName="TxtVarValue" />
+                                                        <Binding Path="Text" ElementName="TxtVarValue" />
+                                                    </MultiBinding>
+                                                </TextBlock.Visibility>
+                                            </TextBlock>
+                                        </Grid>
+
+                                        <Button Grid.Column="2" Content="Fetch Value" Style="{StaticResource PrimaryButton}" Click="BtnFetchVar_Click" HorizontalAlignment="Stretch" Padding="12,8" />
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Card 2 (Bottom, Horizontal): User Variables -->
+                            <Border Background="{StaticResource CardBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="12" Padding="16,14">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                        <Border Width="3" Height="13" CornerRadius="2" Background="{StaticResource AccentPurpleBrush}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                        <TextBlock Text="User Variables" Style="{StaticResource SectionHeading}" Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center" />
+                                        <TextBlock Text="•  Personal cloud storage bound to your account" FontSize="11.5" Foreground="{StaticResource TextMutedBrush}" Margin="8,0,0,0" VerticalAlignment="Center" />
+                                    </StackPanel>
+
+                                    <!-- Compact horizontal row for Key & Value & Actions -->
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="220" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="100" />
+                                            <ColumnDefinition Width="105" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid Grid.Column="0" Margin="0,0,10,0">
+                                            <TextBox x:Name="TxtSetVarKey" Style="{StaticResource NightAuthIconTextBox}" />
+                                            <TextBlock Text="&#xE8D7;" Style="{StaticResource InputIcon}" />
+                                            <TextBlock Text="Key name" Style="{StaticResource PlaceholderText}" Margin="36,0,12,0">
+                                                <TextBlock.Visibility>
+                                                    <MultiBinding Converter="{StaticResource PlaceholderVisibility}">
+                                                        <Binding Path="IsFocused" ElementName="TxtSetVarKey" />
+                                                        <Binding Path="Text" ElementName="TxtSetVarKey" />
+                                                    </MultiBinding>
+                                                </TextBlock.Visibility>
+                                            </TextBlock>
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" Margin="0,0,10,0">
+                                            <TextBox x:Name="TxtSetVarValue" Style="{StaticResource NightAuthTextBox}" />
+                                            <TextBlock Text="Custom value to save or view" Style="{StaticResource PlaceholderText}" Margin="12,0,12,0">
+                                                <TextBlock.Visibility>
+                                                    <MultiBinding Converter="{StaticResource PlaceholderVisibility}">
+                                                        <Binding Path="IsFocused" ElementName="TxtSetVarValue" />
+                                                        <Binding Path="Text" ElementName="TxtSetVarValue" />
+                                                    </MultiBinding>
+                                                </TextBlock.Visibility>
+                                            </TextBlock>
+                                        </Grid>
+
+                                        <Button Grid.Column="2" Content="Get Value" Style="{StaticResource GhostButton}" Click="BtnGetUserVar_Click" HorizontalAlignment="Stretch" Padding="10,8" Margin="0,0,10,0" />
+                                        <Button Grid.Column="3" Content="Save Value" Style="{StaticResource PrimaryButton}" Click="BtnSetVar_Click" HorizontalAlignment="Stretch" Padding="10,8" />
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Card 3: All User Cloud Variables -->
+                            <Border Background="{StaticResource CardBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="12" Padding="16,14" Margin="0,16,0,0">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <Border Width="3" Height="13" CornerRadius="2" Background="{StaticResource AccentBlueBrush}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                            <TextBlock Text="All User Cloud Variables" Style="{StaticResource SectionHeading}" Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                        <Button Grid.Column="1" Content="Fetch All Variables" Style="{StaticResource GhostButton}" Click="BtnFetchAllUserVars_Click" Padding="12,6" />
+                                    </Grid>
+                                    <Border Background="{StaticResource InputBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="8" Padding="2" MaxHeight="220">
+                                        <ListView x:Name="ListUserVariables" Background="Transparent" BorderThickness="0" Foreground="{StaticResource TextPrimaryBrush}">
+                                            <ListView.View>
+                                                <GridView>
+                                                    <GridViewColumn Header="KEY" Width="220">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding Key}" FontFamily="Consolas, monospace" FontSize="12" FontWeight="SemiBold" Foreground="#60A5FA" VerticalAlignment="Center" Margin="6,4" />
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+                                                    <GridViewColumn Header="VALUE" Width="440">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding Value}" FontSize="12" Foreground="#E2E8F0" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="6,4" />
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+                                                </GridView>
+                                            </ListView.View>
+                                        </ListView>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <Grid x:Name="PanelChat" Visibility="Collapsed">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Margin="0,0,0,14">
+                                <TextBlock Text="Live Chat" FontSize="22" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4" />
+                                <TextBlock Text="Real-time communication channel for this application." FontSize="12.5" Foreground="{StaticResource TextMutedBrush}" />
+                            </StackPanel>
+
+                            <!-- Channel connection bar -->
+                            <Border Grid.Row="1" Background="{StaticResource CardBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="10" Padding="12,10" Margin="0,0,0,12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="0" Margin="0,0,10,0">
+                                        <TextBox x:Name="TxtChatRoom" Style="{StaticResource NightAuthIconTextBox}" />
+                                        <TextBlock Text="&#xE8BD;" Style="{StaticResource InputIcon}" />
+                                        <TextBlock Text="Enter room name (e.g. general, announcements)" Style="{StaticResource PlaceholderText}" Margin="36,0,12,0">
+                                            <TextBlock.Visibility>
+                                                <MultiBinding Converter="{StaticResource PlaceholderVisibility}">
+                                                    <Binding Path="IsFocused" ElementName="TxtChatRoom" />
+                                                    <Binding Path="Text" ElementName="TxtChatRoom" />
+                                                </MultiBinding>
+                                            </TextBlock.Visibility>
+                                        </TextBlock>
+                                    </Grid>
+                                    <Button Grid.Column="1" Content="Connect Room" Style="{StaticResource PrimaryButton}" Click="BtnJoinRoom_Click" Padding="14,8" />
+                                    <Border Grid.Column="2" x:Name="BadgeRoomStatus" Background="#203b82f6" BorderBrush="#403b82f6" BorderThickness="1" CornerRadius="7" Padding="10,5" Margin="10,0,0,0" VerticalAlignment="Center">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Ellipse x:Name="DotRoomStatus" Width="6" Height="6" Fill="{StaticResource TextMutedBrush}" Margin="0,0,6,0" VerticalAlignment="Center" />
+                                            <TextBlock x:Name="LblCurrentRoom" Text="Offline" FontSize="11.5" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </Border>
+
+                            <!-- Message conversation panel -->
+                            <Border Grid.Row="2" Background="{StaticResource CardBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="12" Padding="12" MinHeight="260" MaxHeight="320">
+                                <ScrollViewer x:Name="ScrollChatMessages" VerticalScrollBarVisibility="Auto">
+                                    <StackPanel x:Name="ChatMessagesContainer">
+                                        <Border x:Name="ChatEmptyPlaceholder" HorizontalAlignment="Center" Margin="0,40" Visibility="Visible">
+                                            <StackPanel HorizontalAlignment="Center">
+                                                <TextBlock Text="💬" FontSize="26" HorizontalAlignment="Center" Margin="0,0,0,8" Opacity="0.6" />
+                                                <TextBlock Text="No messages yet in this room" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Center" />
+                                                <TextBlock Text="Type a room name above and click Connect to start chatting." FontSize="11.5" Foreground="{StaticResource TextMutedBrush}" HorizontalAlignment="Center" Margin="0,4,0,0" />
+                                            </StackPanel>
+                                        </Border>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </Border>
+
+                            <!-- Message Input strip -->
+                            <Border Grid.Row="3" Background="{StaticResource CardBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="10" Padding="8" Margin="0,12,0,0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="0" Margin="0,0,10,0">
+                                        <TextBox x:Name="TxtChatMessage" Style="{StaticResource NightAuthTextBox}" KeyDown="TxtChatMessage_KeyDown" BorderThickness="0" Background="Transparent" Padding="24,4,8,4" />
+                                        <TextBlock Text="&#xE8F3;" Style="{StaticResource InputIcon}" Margin="3,0,0,0" FontSize="13" />
+                                        <TextBlock Text="Type your message and press Enter..." Style="{StaticResource PlaceholderText}" Margin="24,0,0,0" IsHitTestVisible="False" VerticalAlignment="Center">
+                                            <TextBlock.Visibility>
+                                                <MultiBinding Converter="{StaticResource PlaceholderVisibility}">
+                                                    <Binding Path="IsFocused" ElementName="TxtChatMessage" />
+                                                    <Binding Path="Text" ElementName="TxtChatMessage" />
+                                                </MultiBinding>
+                                            </TextBlock.Visibility>
+                                        </TextBlock>
+                                    </Grid>
+                                    <Button Grid.Column="1" Content="Send" Style="{StaticResource PrimaryButton}" Click="BtnSendChat_Click" Padding="16,6" />
+                                </Grid>
+                            </Border>
+                        </Grid>
+
+                        <StackPanel x:Name="PanelSecurity" Visibility="Collapsed">
+                            <TextBlock Text="Account &amp; Security" FontSize="22" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4" />
+                            <TextBlock Text="Manage credentials, upgrades, and two-factor authentication." FontSize="12.5" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,20" />
+
+                            <Border Background="{StaticResource CardBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="12" Padding="22" Margin="0,0,0,18">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                        <Border Width="3" Height="13" CornerRadius="2" Background="{StaticResource AccentBlueBrush}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                        <TextBlock Text="Change Username" Style="{StaticResource SectionHeading}" Foreground="{StaticResource TextPrimaryBrush}" />
+                                    </StackPanel>
+                                    <TextBlock Text="This immediately terminates active sessions — you will be prompted to sign in again with the new username." FontSize="11.5" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,14" TextWrapping="Wrap" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                            <TextBlock Text="NEW USERNAME" Style="{StaticResource FieldLabel}" Margin="2,0,0,5" />
+                                            <Grid>
+                                                <TextBox x:Name="TxtNewUsername" Style="{StaticResource NightAuthIconTextBox}" />
+                                                <TextBlock Text="&#xE77B;" Style="{StaticResource InputIcon}" />
+                                                <TextBlock Text="Enter new username" Style="{StaticResource PlaceholderText}" Margin="36,0,12,0">
+                                                    <TextBlock.Visibility>
+                                                        <MultiBinding Converter="{StaticResource PlaceholderVisibility}">
+                                                            <Binding Path="IsFocused" ElementName="TxtNewUsername" />
+                                                            <Binding Path="Text" ElementName="TxtNewUsername" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Visibility>
+                                                </TextBlock>
+                                            </Grid>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                            <TextBlock Text="CONFIRM PASSWORD" Style="{StaticResource FieldLabel}" Margin="2,0,0,5" />
+                                            <Grid>
+                                                <PasswordBox x:Name="TxtChangeUsernamePassword" Style="{StaticResource NightAuthPasswordBox}" />
+                                                <TextBlock Text="&#xE72E;" Style="{StaticResource InputIcon}" />
+                                            </Grid>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Button Content="Update Username" Style="{StaticResource PrimaryButton}" Click="BtnChangeUsername_Click" HorizontalAlignment="Left" Margin="0,14,0,0" Padding="15,7" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Background="{StaticResource CardBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="12" Padding="22" Margin="0,0,0,18">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                        <Border Width="3" Height="13" CornerRadius="2" Background="{StaticResource AccentBlueBrush}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                        <TextBlock Text="Upgrade Plan with License Key" Style="{StaticResource SectionHeading}" Foreground="{StaticResource TextPrimaryBrush}" />
+                                    </StackPanel>
+                                    <TextBlock Text="LICENSE KEY" Style="{StaticResource FieldLabel}" Margin="2,0,0,5" />
+                                    <Grid Margin="0,0,0,14">
+                                        <TextBox x:Name="TxtUpgradeKey" Style="{StaticResource NightAuthIconTextBox}" />
+                                        <TextBlock Text="&#xE8EC;" Style="{StaticResource InputIcon}" />
+                                        <TextBlock Text="Enter license key to extend subscription" Style="{StaticResource PlaceholderText}" Margin="36,0,12,0">
+                                            <TextBlock.Visibility>
+                                                <MultiBinding Converter="{StaticResource PlaceholderVisibility}">
+                                                    <Binding Path="IsFocused" ElementName="TxtUpgradeKey" />
+                                                    <Binding Path="Text" ElementName="TxtUpgradeKey" />
+                                                </MultiBinding>
+                                            </TextBlock.Visibility>
+                                        </TextBlock>
+                                    </Grid>
+                                    <Button Content="Apply Upgrade" Style="{StaticResource PrimaryButton}" Click="BtnUpgrade_Click" HorizontalAlignment="Left" Padding="15,7" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Background="{StaticResource CardBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="12" Padding="22" Margin="0,0,0,18">
+                                <StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                            <Border Width="3" Height="13" CornerRadius="2" Background="{StaticResource AccentBlueBrush}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                            <TextBlock Text="Two-Factor Authentication" Style="{StaticResource SectionHeading}" Foreground="{StaticResource TextPrimaryBrush}" />
+                                        </StackPanel>
+                                        <Border Grid.Column="1" x:Name="Badge2faStatus" Background="#71717a22" BorderBrush="#71717a44" BorderThickness="1" CornerRadius="5" Padding="8,3">
+                                            <TextBlock x:Name="Lbl2faStatus" Text="SET UP AVAILABLE" FontSize="9.5" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}" />
+                                        </Border>
+                                    </Grid>
+
+                                    <StackPanel x:Name="Panel2faStart" Margin="0,14,0,0">
+                                        <TextBlock Text="Protect this account with an authenticator app (Google Authenticator, Authy, 1Password, etc.)." FontSize="12" Foreground="{StaticResource TextMutedBrush}" TextWrapping="Wrap" Margin="0,0,0,14" />
+                                        <Button Content="Set Up 2FA" Style="{StaticResource PrimaryButton}" Click="BtnSetup2fa_Click" HorizontalAlignment="Left" Padding="15,7" />
+                                    </StackPanel>
+
+                                    <StackPanel x:Name="Panel2faQr" Visibility="Collapsed" Margin="0,16,0,0">
+                                        <TextBlock Text="Scan this QR with your authenticator app:" FontSize="12" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,12" />
+                                        <Border Background="White" Padding="10" CornerRadius="10" HorizontalAlignment="Left">
+                                            <Image x:Name="Img2faQr" Width="180" Height="180" />
+                                        </Border>
+                                        <TextBlock Text="Or enter this key manually:" Style="{StaticResource FieldLabel}" Margin="0,14,0,6" />
+                                        <Border Background="{StaticResource InputBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="8" Padding="12,8" HorizontalAlignment="Left" Margin="0,0,0,14">
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock x:Name="Txt2faSecret" FontFamily="Consolas" FontSize="13.5" FontWeight="Bold" Foreground="{StaticResource AccentBlueBrush}" VerticalAlignment="Center" Margin="0,0,16,0" Cursor="Hand" MouseDown="Txt2faSecret_MouseDown" ToolTip="Click to copy secret key" />
+                                                <Button x:Name="BtnCopy2faSecret" Style="{StaticResource GhostButton}" Click="BtnCopy2faSecret_Click" Padding="10,4" FontSize="11.5" Cursor="Hand" ToolTip="Copy 2FA Secret Key">
+                                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <TextBlock Text="&#xE8C8;" FontFamily="Segoe MDL2 Assets" FontSize="12" Margin="0,0,6,0" VerticalAlignment="Center" />
+                                                        <TextBlock x:Name="LblCopy2faSecretText" Text="Copy Key" VerticalAlignment="Center" />
+                                                    </StackPanel>
+                                                </Button>
+                                            </StackPanel>
+                                        </Border>
+                                        <TextBlock Text="CONFIRMATION CODE" Style="{StaticResource FieldLabel}" Margin="0,16,0,5" />
+                                        <Grid Width="160" HorizontalAlignment="Left" Margin="0,0,0,14">
+                                            <TextBox x:Name="Txt2faConfirmCode" Style="{StaticResource NightAuthTextBox}" MaxLength="6" HorizontalContentAlignment="Center" FontFamily="Consolas" FontSize="16" />
+                                            <TextBlock Text="000000" Style="{StaticResource PlaceholderText}" HorizontalAlignment="Center" FontFamily="Consolas" FontSize="16">
+                                                <TextBlock.Visibility>
+                                                    <MultiBinding Converter="{StaticResource PlaceholderVisibility}">
+                                                        <Binding Path="IsFocused" ElementName="Txt2faConfirmCode" />
+                                                        <Binding Path="Text" ElementName="Txt2faConfirmCode" />
+                                                    </MultiBinding>
+                                                </TextBlock.Visibility>
+                                            </TextBlock>
+                                        </Grid>
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                            <Button Content="Confirm &amp; Enable 2FA" Style="{StaticResource PrimaryButton}" Click="BtnConfirm2fa_Click" Padding="15,7" Margin="0,0,10,0" />
+                                            <Button Content="Cancel" Style="{StaticResource GhostButton}" Click="BtnCancel2faSetup_Click" Padding="15,7" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel x:Name="Panel2faBackup" Visibility="Collapsed" Margin="0,16,0,0">
+                                        <TextBlock Text="✓ 2FA enabled successfully. Save these one-time backup codes somewhere safe:" FontSize="12" Foreground="{StaticResource SuccessBrush}" TextWrapping="Wrap" Margin="0,0,0,12" />
+                                        <Border Background="{StaticResource InputBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="8" Padding="12" Margin="0,0,0,14">
+                                            <ItemsControl x:Name="ListBackupCodes">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}" FontFamily="Consolas" FontSize="13" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4" />
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </Border>
+                                        <Button Content="Done" Style="{StaticResource GhostButton}" Click="BtnFinish2faSetup_Click" HorizontalAlignment="Left" Padding="16,7" />
+                                    </StackPanel>
+
+                                    <StackPanel x:Name="Panel2faDisable" Visibility="Collapsed" Margin="0,14,0,0">
+                                        <TextBlock Text="Disabling requires your account password AND a current 6-digit code from your authenticator app." FontSize="11.5" Foreground="{StaticResource TextMutedBrush}" TextWrapping="Wrap" Margin="0,0,0,14" />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="160" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                                <TextBlock Text="PASSWORD" Style="{StaticResource FieldLabel}" Margin="2,0,0,5" />
+                                                <Grid>
+                                                    <PasswordBox x:Name="Txt2faDisablePassword" Style="{StaticResource NightAuthPasswordBox}" />
+                                                    <TextBlock Text="&#xE72E;" Style="{StaticResource InputIcon}" />
+                                                </Grid>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                                <TextBlock Text="2FA CODE" Style="{StaticResource FieldLabel}" Margin="2,0,0,5" />
+                                                <Grid>
+                                                    <TextBox x:Name="Txt2faDisableCode" Style="{StaticResource NightAuthTextBox}" MaxLength="6" HorizontalContentAlignment="Center" FontFamily="Consolas" FontSize="15" />
+                                                    <TextBlock Text="000000" Style="{StaticResource PlaceholderText}" HorizontalAlignment="Center" FontFamily="Consolas" FontSize="15">
+                                                        <TextBlock.Visibility>
+                                                            <MultiBinding Converter="{StaticResource PlaceholderVisibility}">
+                                                                <Binding Path="IsFocused" ElementName="Txt2faDisableCode" />
+                                                                <Binding Path="Text" ElementName="Txt2faDisableCode" />
+                                                            </MultiBinding>
+                                                        </TextBlock.Visibility>
+                                                    </TextBlock>
+                                                </Grid>
+                                            </StackPanel>
+                                        </Grid>
+                                        <Button Content="Disable 2FA" Style="{StaticResource GhostButton}" Click="BtnDisable2fa_Click"
+                                                Foreground="{StaticResource ErrorBrush}" HorizontalAlignment="Left" Margin="0,14,0,0" Padding="16,7" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Background="{StaticResource CardBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="12" Padding="22">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                        <Border Width="3" Height="13" CornerRadius="2" Background="{StaticResource AccentBlueBrush}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                        <TextBlock Text="Send Audit Log to Server" Style="{StaticResource SectionHeading}" Foreground="{StaticResource TextPrimaryBrush}" />
+                                    </StackPanel>
+                                    <TextBlock Text="MESSAGE" Style="{StaticResource FieldLabel}" Margin="2,0,0,5" />
+                                    <Grid Margin="0,0,0,14">
+                                        <TextBox x:Name="TxtAuditMessage" Style="{StaticResource NightAuthIconTextBox}" />
+                                        <TextBlock Text="&#xE90A;" Style="{StaticResource InputIcon}" />
+                                        <TextBlock Text="Enter log message to store in dashboard audit trail..." Style="{StaticResource PlaceholderText}" Margin="36,0,12,0">
+                                            <TextBlock.Visibility>
+                                                <MultiBinding Converter="{StaticResource PlaceholderVisibility}">
+                                                    <Binding Path="IsFocused" ElementName="TxtAuditMessage" />
+                                                    <Binding Path="Text" ElementName="TxtAuditMessage" />
+                                                </MultiBinding>
+                                            </TextBlock.Visibility>
+                                        </TextBlock>
+                                    </Grid>
+                                    <Button Content="Send Audit Log" Style="{StaticResource GhostButton}" Click="BtnSendLog_Click" HorizontalAlignment="Left" Padding="16,7" />
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Security Tools Card: Blacklist & File Hash & Killswitch -->
+                            <Border Background="{StaticResource CardBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="12" Padding="22" Margin="0,16,0,0">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
+                                        <Border Width="3" Height="13" CornerRadius="2" Background="{StaticResource AccentBlueBrush}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                        <TextBlock Text="Hardware &amp; Integrity Protections" Style="{StaticResource SectionHeading}" Foreground="{StaticResource TextPrimaryBrush}" />
+                                    </StackPanel>
+
+                                    <!-- HWID Blacklist -->
+                                    <TextBlock Text="HWID BLACKLIST CHECKER" Style="{StaticResource FieldLabel}" Margin="2,0,0,5" />
+                                    <Grid Margin="0,0,0,8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="130" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0" Margin="0,0,10,0">
+                                            <TextBox x:Name="TxtBlacklistHwid" Style="{StaticResource NightAuthIconTextBox}" />
+                                            <TextBlock Text="&#xE7F8;" Style="{StaticResource InputIcon}" />
+                                            <TextBlock Text="Enter HWID or leave empty for current machine" Style="{StaticResource PlaceholderText}" Margin="36,0,12,0">
+                                                <TextBlock.Visibility>
+                                                    <MultiBinding Converter="{StaticResource PlaceholderVisibility}">
+                                                        <Binding Path="IsFocused" ElementName="TxtBlacklistHwid" />
+                                                        <Binding Path="Text" ElementName="TxtBlacklistHwid" />
+                                                    </MultiBinding>
+                                                </TextBlock.Visibility>
+                                            </TextBlock>
+                                        </Grid>
+                                        <Button Grid.Column="1" Content="Check HWID" Style="{StaticResource GhostButton}" Click="BtnCheckBlacklist_Click" Padding="12,7" />
+                                    </Grid>
+                                    <TextBlock x:Name="LblBlacklistResult" Text="" FontSize="11.5" Foreground="{StaticResource TextMutedBrush}" Margin="2,0,0,14" />
+
+                                    <!-- File Hash Verification -->
+                                    <TextBlock Text="FILE INTEGRITY AUTHENTICATOR (SHA-256)" Style="{StaticResource FieldLabel}" Margin="2,0,0,5" />
+                                    <Grid Margin="0,0,0,8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="130" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0" Margin="0,0,10,0">
+                                            <TextBox x:Name="TxtVerifyHash" Style="{StaticResource NightAuthIconTextBox}" />
+                                            <TextBlock Text="&#xE8B7;" Style="{StaticResource InputIcon}" />
+                                            <TextBlock Text="Enter file SHA-256 hash to verify against server signatures..." Style="{StaticResource PlaceholderText}" Margin="36,0,12,0">
+                                                <TextBlock.Visibility>
+                                                    <MultiBinding Converter="{StaticResource PlaceholderVisibility}">
+                                                        <Binding Path="IsFocused" ElementName="TxtVerifyHash" />
+                                                        <Binding Path="Text" ElementName="TxtVerifyHash" />
+                                                    </MultiBinding>
+                                                </TextBlock.Visibility>
+                                            </TextBlock>
+                                        </Grid>
+                                        <Button Grid.Column="1" Content="Verify Hash" Style="{StaticResource GhostButton}" Click="BtnVerifyHash_Click" Padding="12,7" />
+                                    </Grid>
+                                    <TextBlock x:Name="LblVerifyHashResult" Text="" FontSize="11.5" Foreground="{StaticResource TextMutedBrush}" Margin="2,0,0,14" />
+
+                                    <!-- Emergency Killswitch / Self-Ban -->
+                                    <TextBlock Text="EMERGENCY KILLSWITCH / SELF-BAN" Style="{StaticResource FieldLabel}" Foreground="{StaticResource ErrorBrush}" Margin="2,0,0,5" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="130" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0" Margin="0,0,10,0">
+                                            <TextBox x:Name="TxtBanReason" Style="{StaticResource NightAuthIconTextBox}" />
+                                            <TextBlock Text="&#xE711;" Style="{StaticResource InputIcon}" />
+                                            <TextBlock Text="Reason for self-ban / killswitch..." Style="{StaticResource PlaceholderText}" Margin="36,0,12,0">
+                                                <TextBlock.Visibility>
+                                                    <MultiBinding Converter="{StaticResource PlaceholderVisibility}">
+                                                        <Binding Path="IsFocused" ElementName="TxtBanReason" />
+                                                        <Binding Path="Text" ElementName="TxtBanReason" />
+                                                    </MultiBinding>
+                                                </TextBlock.Visibility>
+                                            </TextBlock>
+                                        </Grid>
+                                        <Button Grid.Column="1" Content="Trigger Ban" Style="{StaticResource GhostButton}" Foreground="{StaticResource ErrorBrush}" Click="BtnSelfBan_Click" Padding="12,7" />
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- Subscriptions Panel -->
+                        <StackPanel x:Name="PanelSubscriptions" Visibility="Collapsed">
+                            <TextBlock Text="Subscriptions" FontSize="22" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4" />
+                            <TextBlock Text="Active subscription licenses and expiration information." FontSize="12.5" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,20" />
+
+                            <Border Background="{StaticResource CardBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="12" Padding="20">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,14">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <Border Width="3" Height="13" CornerRadius="2" Background="{StaticResource AccentBlueBrush}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                            <TextBlock Text="Active License Tiers" Style="{StaticResource SectionHeading}" Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                        <Button Grid.Column="1" Content="Refresh Subscriptions" Style="{StaticResource GhostButton}" Click="BtnRefreshSubscriptions_Click" Padding="12,6" />
+                                    </Grid>
+
+                                    <Border Background="{StaticResource InputBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="8" Padding="2">
+                                        <ListView x:Name="ListDedicatedSubscriptions" Background="Transparent" BorderThickness="0" Foreground="{StaticResource TextPrimaryBrush}">
+                                            <ListView.View>
+                                                <GridView>
+                                                    <GridViewColumn Header="SUBSCRIPTION" Width="130">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <Border Background="#1A2234" BorderBrush="#26385C" BorderThickness="1" CornerRadius="5" Padding="7,3" HorizontalAlignment="Left" Margin="4,2">
+                                                                    <TextBlock Text="{Binding Subscription}" FontSize="11" FontWeight="Bold" Foreground="#93C5FD" />
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+                                                    <GridViewColumn Header="LICENSE KEY" Width="230">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding Key}" FontFamily="Consolas, monospace" FontSize="12" Foreground="#E2E8F0" VerticalAlignment="Center" Margin="6,4" />
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+                                                    <GridViewColumn Header="EXPIRATION" Width="240">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding ExpiryFormatted}" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center" Margin="6,4" />
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+                                                    <GridViewColumn Header="TIME REMAINING" Width="200">
+                                                        <GridViewColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <Border Background="#0F241B" BorderBrush="#1A4A35" BorderThickness="1" CornerRadius="4" Padding="7,2" HorizontalAlignment="Left" Margin="4,2">
+                                                                    <TextBlock Text="{Binding TimeRemainingFormatted}" FontSize="11" FontWeight="SemiBold" Foreground="#34D399" />
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </GridViewColumn.CellTemplate>
+                                                    </GridViewColumn>
+                                                </GridView>
+                                            </ListView.View>
+                                        </ListView>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- App Statistics Panel -->
+                        <StackPanel x:Name="PanelStats" Visibility="Collapsed">
+                            <TextBlock Text="App Statistics" FontSize="22" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4" />
+                            <TextBlock Text="Telemetry, active connections, and server ecosystem metrics." FontSize="12.5" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,20" />
+
+                            <Grid Margin="0,0,0,20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.Column="0" Background="{StaticResource CardBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="10" Padding="16" Margin="0,0,8,0">
+                                    <StackPanel>
+                                        <TextBlock Text="TOTAL USERS" Style="{StaticResource FieldLabel}" />
+                                        <TextBlock x:Name="LblStatsTotalUsers" Text="—" FontSize="20" FontWeight="Bold" Foreground="{StaticResource AccentBlueBrush}" Margin="0,4,0,0" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Grid.Column="1" Background="{StaticResource CardBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="10" Padding="16" Margin="4,0,4,0">
+                                    <StackPanel>
+                                        <TextBlock Text="ONLINE USERS" Style="{StaticResource FieldLabel}" />
+                                        <TextBlock x:Name="LblStatsOnlineUsers" Text="—" FontSize="20" FontWeight="Bold" Foreground="{StaticResource SuccessBrush}" Margin="0,4,0,0" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Grid.Column="2" Background="{StaticResource CardBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="10" Padding="16" Margin="4,0,4,0">
+                                    <StackPanel>
+                                        <TextBlock Text="TOTAL LICENSES" Style="{StaticResource FieldLabel}" />
+                                        <TextBlock x:Name="LblStatsTotalKeys" Text="—" FontSize="20" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,4,0,0" />
+                                    </StackPanel>
+                                </Border>
+                                <Border Grid.Column="3" Background="{StaticResource CardBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="10" Padding="16" Margin="8,0,0,0">
+                                    <StackPanel>
+                                        <TextBlock Text="APP VERSION" Style="{StaticResource FieldLabel}" />
+                                        <TextBlock x:Name="LblStatsAppVersion" Text="1.0" FontSize="20" FontWeight="Bold" Foreground="{StaticResource AccentPurpleBrush}" Margin="0,4,0,0" />
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+
+                            <Border Background="{StaticResource CardBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="12" Padding="20">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,14">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <Border Width="3" Height="13" CornerRadius="2" Background="{StaticResource AccentBlueBrush}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                            <TextBlock Text="Active User Sessions" Style="{StaticResource SectionHeading}" Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                        <Button Grid.Column="1" Content="Refresh Statistics" Style="{StaticResource GhostButton}" Click="BtnRefreshStats_Click" Padding="12,6" />
+                                    </Grid>
+
+                                    <Border Background="{StaticResource InputBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="8" Padding="2" MaxHeight="260">
+                                        <ListBox x:Name="ListOnlineSessions" Background="Transparent" BorderThickness="0" Foreground="{StaticResource TextPrimaryBrush}" Margin="4">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="#0E1017" BorderBrush="#1F2433" BorderThickness="1" CornerRadius="6" Padding="12,8" Margin="0,0,0,6">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto" />
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="Auto" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <Ellipse Grid.Column="0" Width="7" Height="7" Fill="#10B981" Margin="0,0,10,0" VerticalAlignment="Center" />
+                                                            <TextBlock Grid.Column="1" Text="{Binding}" FontSize="12.5" FontWeight="SemiBold" Foreground="White" VerticalAlignment="Center" />
+                                                            <Border Grid.Column="2" Background="#11251E" BorderBrush="#185C46" BorderThickness="1" CornerRadius="4" Padding="6,2">
+                                                                <TextBlock Text="ONLINE" FontSize="9" FontWeight="Bold" Foreground="#34D399" />
+                                                            </Border>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- Files & Webhooks Panel -->
+                        <StackPanel x:Name="PanelFilesHooks" Visibility="Collapsed">
+                            <TextBlock Text="Files &amp; Webhooks" FontSize="22" FontWeight="Bold" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,4" />
+                            <TextBlock Text="Secure server asset distribution and cloud webhook dispatch." FontSize="12.5" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,20" />
+
+                            <!-- Remote File Downloader -->
+                            <Border Background="{StaticResource CardBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="12" Padding="20" Margin="0,0,0,20">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                        <Border Width="3" Height="13" CornerRadius="2" Background="{StaticResource AccentBlueBrush}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                        <TextBlock Text="Protected Remote File Downloader" Style="{StaticResource SectionHeading}" Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center" />
+                                    </StackPanel>
+
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="280" />
+                                            <ColumnDefinition Width="140" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0" Margin="0,0,10,0">
+                                            <TextBox x:Name="TxtDownloadFileId" Style="{StaticResource NightAuthIconTextBox}" />
+                                            <TextBlock Text="&#xE896;" Style="{StaticResource InputIcon}" />
+                                            <TextBlock Text="File ID (e.g. 1)" Style="{StaticResource PlaceholderText}" Margin="36,0,12,0">
+                                                <TextBlock.Visibility>
+                                                    <MultiBinding Converter="{StaticResource PlaceholderVisibility}">
+                                                        <Binding Path="IsFocused" ElementName="TxtDownloadFileId" />
+                                                        <Binding Path="Text" ElementName="TxtDownloadFileId" />
+                                                    </MultiBinding>
+                                                </TextBlock.Visibility>
+                                            </TextBlock>
+                                        </Grid>
+                                        <Button Grid.Column="1" Content="Download File" Style="{StaticResource PrimaryButton}" Click="BtnDownloadFile_Click" Padding="12,7" />
+                                    </Grid>
+                                    <TextBlock x:Name="LblDownloadResult" Text="Protected binary payload downloads directly into memory." FontSize="11.5" Foreground="{StaticResource TextMutedBrush}" Margin="2,0,0,0" />
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Webhook Trigger -->
+                            <Border Background="{StaticResource CardBgBrush}" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="1" CornerRadius="12" Padding="20">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                        <Border Width="3" Height="13" CornerRadius="2" Background="{StaticResource AccentPurpleBrush}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                                        <TextBlock Text="Webhook Trigger" Style="{StaticResource SectionHeading}" Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center" />
+                                    </StackPanel>
+
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="220" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="140" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0" Margin="0,0,10,0">
+                                            <TextBox x:Name="TxtWebhookId" Style="{StaticResource NightAuthIconTextBox}" />
+                                            <TextBlock Text="&#xE71B;" Style="{StaticResource InputIcon}" />
+                                            <TextBlock Text="Webhook ID" Style="{StaticResource PlaceholderText}" Margin="36,0,12,0">
+                                                <TextBlock.Visibility>
+                                                    <MultiBinding Converter="{StaticResource PlaceholderVisibility}">
+                                                        <Binding Path="IsFocused" ElementName="TxtWebhookId" />
+                                                        <Binding Path="Text" ElementName="TxtWebhookId" />
+                                                    </MultiBinding>
+                                                </TextBlock.Visibility>
+                                            </TextBlock>
+                                        </Grid>
+                                        <Grid Grid.Column="1" Margin="0,0,10,0">
+                                            <TextBox x:Name="TxtWebhookPayload" Style="{StaticResource NightAuthTextBox}" />
+                                            <TextBlock Text="Optional JSON payload (e.g. {&quot;action&quot;:&quot;ping&quot;})" Style="{StaticResource PlaceholderText}" Margin="12,0,12,0">
+                                                <TextBlock.Visibility>
+                                                    <MultiBinding Converter="{StaticResource PlaceholderVisibility}">
+                                                        <Binding Path="IsFocused" ElementName="TxtWebhookPayload" />
+                                                        <Binding Path="Text" ElementName="TxtWebhookPayload" />
+                                                    </MultiBinding>
+                                                </TextBlock.Visibility>
+                                            </TextBlock>
+                                        </Grid>
+                                        <Button Grid.Column="2" Content="Trigger Webhook" Style="{StaticResource PrimaryButton}" Click="BtnTriggerWebhook_Click" Padding="12,7" />
+                                    </Grid>
+                                    <TextBlock x:Name="LblWebhookResult" Text="Server response will appear here..." FontSize="11.5" Foreground="{StaticResource TextMutedBrush}" Margin="2,0,0,0" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </Grid>
+
+            <Border Grid.Row="2" Background="{StaticResource CardHeaderBgBrush}" CornerRadius="0,0,16,16" BorderBrush="{StaticResource BorderSubtleBrush}" BorderThickness="0,1,0,0">
+                <TextBlock x:Name="LblStatus" Text="" FontSize="11.5" Foreground="{StaticResource TextMutedBrush}"
+                           Padding="20,9" HorizontalAlignment="Left" />
+            </Border>
+        </Grid>
+    </Border>
+</Window>
